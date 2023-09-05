@@ -19,6 +19,7 @@
     </div>
     <div id="content">
         <!-- Contenido de la página -->
+        <?php echo $contenido; ?>
     </div>
 </body>
 </html>

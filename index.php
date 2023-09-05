@@ -1,11 +1,20 @@
 <?php
 // Incluye las clases y archivos necesarios.
-require_once 'ConexionBD.php';
-require_once 'AlumnoController.php';
+//require_once 'ConexionBD.php';
+//require_once 'AlumnoController.php';
+require_once 'controlador/SiteController.php';
+
+$site = new SiteController();
+
+$site->admin();
+
+
+exit(1);
+return;
 
 // Verifica si se proporciona la ruta y la acción en la URL.
-if (isset($_GET['ruta_accion'])) {
-    $rutaAccion = $_GET['ruta_accion'];
+if (isset($_GET['r'])) {
+    $rutaAccion = $_GET['r'];
 
     // Divide la ruta y la acción utilizando el carácter "/" como separador.
     $rutaAccionArray = explode('/', $rutaAccion);
@@ -47,6 +56,7 @@ if (isset($_GET['ruta_accion'])) {
         echo "Ruta y acción no válidas. Utiliza el formato 'entidad/accion'.";
     }
 } else {
+
     echo "Por favor, proporciona la ruta y la acción en la URL.";
 }
 ?>

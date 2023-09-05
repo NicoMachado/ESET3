@@ -1,48 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ABM Tareas</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
+<?php
+// Incluye las clases y archivos necesarios.
+require_once 'ConexionBD.php';
+require_once 'AlumnoController.php';
+
+// Verifica si se proporciona la ruta y la acción en la URL.
+if (isset($_GET['ruta_accion'])) {
+    $rutaAccion = $_GET['ruta_accion'];
+
+    // Divide la ruta y la acción utilizando el carácter "/" como separador.
+    $rutaAccionArray = explode('/', $rutaAccion);
+
+    // Verifica si se proporciona un ID como parámetro.
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
+
+    // Verifica si la ruta y la acción son válidas.
+    if (count($rutaAccionArray) === 2) {
+        $entidad = $rutaAccionArray[0];
+        $accion = $rutaAccionArray[1];
+
+        // Crea una instancia de la clase ConexionBD para la base de datos.
+        $conexion = new ConexionBD("localhost", "usuario_db", "contrasena_db", "nombre_db");
+
+        // Crea una instancia del controlador AlumnoController.
+        $alumnoController = new AlumnoController();
+
+        // Realiza las acciones correspondientes según la entidad y la acción.
+        if ($entidad === 'alumno') {
+            if ($accion === 'listar') {
+                $alumnoController->admin();
+            } elseif ($accion === 'ver' && $id !== null) {
+                $alumnoController->view($id);
+            } elseif ($accion === 'actualizar' && $id !== null) {
+                $alumnoController->update($id);
+            } elseif ($accion === 'eliminar' && $id !== null) {
+                $alumnoController->delete($id);
+            } else {
+                echo "Acción no válida para la entidad 'alumno'";
+            }
+        } else {
+            echo "Entidad no válida";
         }
-        #menu {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-        }
-        #content {
-            padding: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 5px;
-        }
-        li a {
-            color: #fcfbbc ;
-            text-decoration: none;
-        }
-        li a:hover {
-            color: #666;
-        }
-    </style>
-</head>
-<body>
-    <div id="menu">
-        <h1>ABM Tareas</h1>
-        <ul>
-            <li><a href="index.php">Inicio</a></li>
-            <li><a href="listar_tareas.php">Listar Tareas</a></li>
-            <li><a href="agregar_tarea.php">Agregar Tarea</a></li>
-            <li><a href="editar_tarea.php">Editar Tarea</a></li>
-            <li><a href="eliminar_tarea.php">Eliminar Tarea</a></li>
-        </ul>
-    </div>
-    <div id="content">
-        <!-- Contenido de la página -->
-    </div>
-</body>
-</html>
+
+        // Cierra la conexión a la base de datos.
+        $conexion->cerrarConexion();
+    } else {
+        echo "Ruta y acción no válidas. Utiliza el formato 'entidad/accion'.";
+    }
+} else {
+    echo "Por favor, proporciona la ruta y la acción en la URL.";
+}
+?>

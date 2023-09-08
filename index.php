@@ -4,10 +4,9 @@
 //require_once 'AlumnoController.php';
 require_once 'controlador/SiteController.php';
 
-$site = new SiteController();
+$site = new SiteController('vistas/app');
 
-$site->admin();
-
+echo $site->admin("index.view");
 
 exit(1);
 return;
